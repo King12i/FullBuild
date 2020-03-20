@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h1>{{this_book.title}}</h1>
+            </div>
+            <div class="col-6 text-right">
+                <a href="/dashboard/books">Go back</a>
+            </div>
+        </div>
+        <div class="row">
+
+            <ul>
+                <li><span class="h6">Id:</span> {{this_book.id}}</li>
+                <li><span class="h6">Posted By:</span> {{this_book.uploaded_by.first_name}} {{this_book.uploaded_by.last_name}}</li>
+                <li><span class="h6">Description:</span> {{this_book.description}}</li>
+            </ul>
+        </div>
+        <div class="row">
+            <h4>Authors</h4>
+        </div>
+        <div class="row">
+            <ul>
+                {% for author in this_book.authors.all %}
+                <li><a href="/dashboard/authors/{{author.id}}">{{author.first_name}} {{author.last_name}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row">
+            <form class="col-12 col-md-8" action="/dashboard/books/{{this_book.id}}/add_author" method="POST">
+                {% csrf_token %}
+                <div class="row form-group">
+                    <select class="col-8 form-control" name="author_id">
+                        {% for author in authors %}
+                        {% if this_book not in author.books.all %}
+                        <option value="{{author.id}}">{{author.first_name}} {{author.last_name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Add" class="col-sm-4 btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

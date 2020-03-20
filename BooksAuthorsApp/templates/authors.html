@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-7">
+                <h1>Add an Author</h1>
+            </div>
+            <div class="col-5 text-right">
+                <a href="/dashboard/books">Books</a> | <a href="/logout">Log Out</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-8">
+                <div class="col-12">
+                    <div class="row">
+                        {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{message}}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <form class="col-12 col-md-8" action="/dashboard/authors/create" method="POST">
+                            {% csrf_token %}
+                            <div class="row form-group">
+                                <label for="first_name" class="col-12 col-md-4">First Name: </label>
+                                <input type="text" name="first_name" class="col-12 col-md-8 form-control">
+                            </div>
+                            <div class="row form-group">
+                                <label for="last_name" class="col-12 col-md-4">Last Name: </label>
+                                <input type="text" name="last_name" class="col-12 col-md-8 form-control">
+                            </div>
+                            <div class="row form-group">
+                                <label for="notes" class="col-12 col-md-4">Notes: </label>
+                                <textarea name="notes" rows="4" class="col-12 col-md-8 form-control"></textarea>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-4"></div>
+                                <input type="submit" value="Add" class="btn btn-primary col-6 col-md-4">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for author in authors %}
+                        <tr>
+                            <td>{{author.id}}</td>
+                            <td>{{author.first_name}} {{author.last_name}}</td>
+                            <td><a href="/dashboard/authors/{{author.id}}">View</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
